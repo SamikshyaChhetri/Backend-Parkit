@@ -32,6 +32,7 @@ app.post("/adduser", async (req, res) => {
       name,
       email,
       id,
+      age,
     },
   });
 });
