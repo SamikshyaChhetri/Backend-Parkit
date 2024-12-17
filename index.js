@@ -27,7 +27,7 @@ app.post("/adduser", async (req, res) => {
   const email = req.body.email;
   const id = Date.now().toString();
   const age = req.body.age;
-  await prisma.user.create({
+  const createUser = await prisma.user.create({
     data: {
       name,
       email,
@@ -35,9 +35,11 @@ app.post("/adduser", async (req, res) => {
       age,
     },
   });
+  res.send(createUser);
 });
-app.get("/getuser", (req, res) => {
-  console.log(res.body.name);
+app.get("/getuser", async (req, res) => {
+  const alluser = await prisma.user.findMany();
+  res.send(alluser);
 });
 app.listen(3333, () => {
   console.log("Server is running at 3333 port");
