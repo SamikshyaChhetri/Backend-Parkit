@@ -1,3 +1,3 @@
-export const getcontroller = (req, res) => {
+export const registerController = (req, res) => {
   console.log("This is a controller");
 };
