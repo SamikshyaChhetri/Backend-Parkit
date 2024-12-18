@@ -14,8 +14,9 @@ datasource db {
 }
 
 model user {
-  name  String
-  email String
-  id    String @unique
-  age   Int
+  name   String
+  email  String
+  id     String  @unique
+  age    Int
+  gender String?
 }
