@@ -1,7 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
+import registerRouter from "./src/features/auth/register/route.js";
 const app = express();
 app.use(express.json());
+app.use("/auth", registerRouter);
 const prisma = new PrismaClient();
 
 app.post("/adduser", async (req, res) => {
