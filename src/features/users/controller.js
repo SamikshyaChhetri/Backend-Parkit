@@ -13,6 +13,5 @@ export const singleUserController = async (req, res) => {
   if (!userData) {
     return res.send("No user found");
   }
-
   return res.send(userData);
 };

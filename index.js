@@ -88,6 +88,6 @@ app.use("/users", userRouter);
 //   return res.send("No data available");
 // });
 
-// app.listen(3333, () => {
-//   console.log("Server is running at 3333 port");
-// });
+app.listen(3333, () => {
+  console.log("Server is running at 3333 port");
+});
