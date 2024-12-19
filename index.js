@@ -5,7 +5,6 @@ const app = express();
 app.use(express.json());
 app.use("/auth", registerRouter);
 const prisma = new PrismaClient();
-
 app.post("/adduser", async (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
