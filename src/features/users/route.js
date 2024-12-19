@@ -1,4 +1,5 @@
 import { Router } from "express";
-const getUserData = Router();
-getUserData.get("/getUser", userController);
-export default getUserData;
+const userRouter = Router();
+userRouter.get("/getUser", userController);
+userRouter.get("/getSingleuser/:id", singleUserController);
+export default userRouter;
