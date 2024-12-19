@@ -1,5 +1,5 @@
-import { Prisma } from "@prisma/client";
-const prisma = new Prisma();
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 export const userController = async (req, res) => {
   const alluser = await prisma.user.findMany();
   res.send(alluser);
