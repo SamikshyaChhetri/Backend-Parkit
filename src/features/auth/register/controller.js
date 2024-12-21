@@ -4,10 +4,23 @@ export const prisma = new PrismaClient();
 export const registerController = async (req, res) => {
   const name = req.body.username;
   const email = req.body.email;
-  // const password = req.body.password;
   const phone = req.body.phone;
   const address = req.body.address;
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const findEmail = await prisma.user.findFirst({
+    where: {
+      email,
+    },
+  });
+  if (findEmail) {
+    return res.status(403).send({
+      success: false,
+      data: [],
+      message: "Email already exists",
+      error: [],
+    });
+  }
+
   const createUser = await prisma.user.create({
     data: {
       name,
@@ -17,5 +30,10 @@ export const registerController = async (req, res) => {
       phone,
     },
   });
-  return res.send(createUser);
+  return res.send({
+    success: true,
+    data: createUser,
+    message: "User registered successfully",
+    error: [],
+  });
 };
