@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import bcrypt from "bcrypt";
+export const prisma = new PrismaClient();
 export const registerController = async (req, res) => {
   const name = req.body.username;
   const email = req.body.email;
@@ -11,7 +12,7 @@ export const registerController = async (req, res) => {
     data: {
       name,
       email,
-      hashedPassword,
+      password: hashedPassword,
       address,
       phone,
     },
