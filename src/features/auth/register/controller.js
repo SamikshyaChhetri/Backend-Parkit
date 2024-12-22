@@ -20,7 +20,6 @@ export const registerController = async (req, res) => {
       error: [],
     });
   }
-
   const createUser = await prisma.user.create({
     data: {
       name,
