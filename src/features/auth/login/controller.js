@@ -26,7 +26,28 @@ export const loginController = async (req, res) => {
       },
       "www"
     );
-    console.log(token);
+    // console.log(token);
+    const findToken = await prisma.token.findFirst({
+      where: {
+        userId: findUser.id,
+      },
+    });
+    console.log(findToken);
+    if (!findToken) {
+      await prisma.token.create({
+        data: {
+          token,
+          userId: findUser.id,
+        },
+      });
+    } else {
+      await prisma.token.update({
+        where: { userId: findUser.id },
+        data: {
+          token,
+        },
+      });
+    }
     return res.send({
       success: true,
       data: {
