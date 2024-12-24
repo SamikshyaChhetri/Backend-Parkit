@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { prisma } from "../register/controller.js";
 export const loginController = async (req, res) => {
   const email = req.body.email;
@@ -18,18 +19,29 @@ export const loginController = async (req, res) => {
     });
   }
   const comparePassword = await bcrypt.compare(password, findUser.password);
-  console.log(comparePassword);
-  comparePassword
-    ? res.status(200).send({
-        success: true,
-        data: [],
-        message: "User logged in successfully",
-        error: [],
-      })
-    : res.status(401).send({
-        success: false,
-        data: [],
-        message: "Invalid password",
-        error: [],
-      });
+  if (comparePassword) {
+    const token = jwt.sign(
+      {
+        userid: findUser.id,
+      },
+      "www"
+    );
+    console.log(token);
+    return res.send({
+      success: true,
+      data: {
+        token,
+        user: findUser,
+      },
+      message: "User logged in successfully",
+      error: [],
+    });
+  } else {
+    return res.status(401).send({
+      success: false,
+      data: [],
+      message: "Invalid password",
+      error: [],
+    });
+  }
 };
