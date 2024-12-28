@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { prisma } from "../register/controller.js";
 export const loginController = async (req, res) => {
   const email = req.body.email;
+  console.log(req.cookies);
   const password = req.body.password;
   // console.log(email, password);
   const findUser = await prisma.user.findFirst({
@@ -19,6 +20,14 @@ export const loginController = async (req, res) => {
     });
   }
   const comparePassword = await bcrypt.compare(password, findUser.password);
+  if (!comparePassword) {
+    return res.status(401).send({
+      success: false,
+      data: [],
+      message: "Invalid password",
+      error: [],
+    });
+  }
   if (comparePassword) {
     const token = jwt.sign(
       {
@@ -26,13 +35,15 @@ export const loginController = async (req, res) => {
       },
       "www"
     );
-    // console.log(token);
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
     const findToken = await prisma.token.findFirst({
       where: {
         userId: findUser.id,
       },
     });
-    console.log(findToken);
+
     if (!findToken) {
       await prisma.token.create({
         data: {
@@ -55,13 +66,6 @@ export const loginController = async (req, res) => {
         user: findUser,
       },
       message: "User logged in successfully",
-      error: [],
-    });
-  } else {
-    return res.status(401).send({
-      success: false,
-      data: [],
-      message: "Invalid password",
       error: [],
     });
   }
