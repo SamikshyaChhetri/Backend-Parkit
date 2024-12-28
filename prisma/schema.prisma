@@ -21,6 +21,7 @@ model user {
   address  String
   phone    String
   token    token[]
+  avatar   String
 }
 
 model token {
