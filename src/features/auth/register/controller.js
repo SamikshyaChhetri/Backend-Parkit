@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import { generateAvatar } from "../../../utils/utils.js";
 export const prisma = new PrismaClient();
 export const registerController = async (req, res) => {
   const name = req.body.username;
@@ -20,6 +21,7 @@ export const registerController = async (req, res) => {
       error: [],
     });
   }
+  const generatedAvatar = generateAvatar();
   const createUser = await prisma.user.create({
     data: {
       name,
@@ -27,6 +29,7 @@ export const registerController = async (req, res) => {
       password: hashedPassword,
       address,
       phone,
+      avatar: generatedAvatar,
     },
   });
   return res.send({
