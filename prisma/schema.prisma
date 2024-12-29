@@ -14,7 +14,7 @@ datasource db {
 }
 
 model user {
-  id       String  @id @default(cuid())
+  id       String    @id @default(cuid())
   name     String
   email    String
   password String
@@ -22,6 +22,7 @@ model user {
   phone    String
   token    token[]
   avatar   String
+  listing  listing[]
 }
 
 model token {
@@ -29,4 +30,19 @@ model token {
   token  String
   userId String @unique
   user   user   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model listing {
+  id            String @id @default(cuid())
+  city          String
+  street        String
+  country       String
+  zipcode       String
+  type          String
+  description   String
+  rating        Int    @default(0)
+  price         Int
+  no_of_vehicle Int
+  ownerId       String
+  owner         user   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
