@@ -1,12 +1,12 @@
 import { Router } from "express";
 import {
-  getlistController,
-  getSingleList,
-  listController,
+  createListingController,
+  getlistingsController,
+  getSingleListing,
 } from "./controller.js";
 
 const listRouter = Router();
-listRouter.post("/", listController);
-listRouter.get("/", getlistController);
-listRouter.get("/:id", getSingleList);
+listRouter.post("/", createListingController);
+listRouter.get("/", getlistingsController);
+listRouter.get("/:id", getSingleListing);
 export default listRouter;
