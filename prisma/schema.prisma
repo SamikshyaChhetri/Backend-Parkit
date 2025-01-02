@@ -33,16 +33,16 @@ model token {
 }
 
 model listing {
-  id            String @id @default(cuid())
-  city          String
-  street        String
-  country       String
-  zipcode       String
-  type          String
-  description   String
-  rating        Int    @default(0)
-  price         Int
-  no_of_vehicle Int
-  ownerId       String
-  owner         user   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  id          String @id @default(cuid())
+  city        String
+  street      String
+  country     String
+  zipcode     String
+  type        String
+  description String
+  rating      Int    @default(0)
+  price       String
+  noOfVehicle String
+  ownerId     String
+  owner       user   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
