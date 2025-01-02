@@ -11,7 +11,7 @@ export const createListingController = async (req, res) => {
       description,
       rating,
       price,
-      no_of_vehicle,
+      noOfVehicle,
       ownerId,
     } = req.body;
 
@@ -25,7 +25,7 @@ export const createListingController = async (req, res) => {
         description,
         rating,
         price,
-        no_of_vehicle,
+        noOfVehicle,
         ownerId,
       },
     });
@@ -37,6 +37,7 @@ export const createListingController = async (req, res) => {
       error: [],
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).send({
       success: false,
       data: [],
