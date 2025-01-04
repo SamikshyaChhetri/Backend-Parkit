@@ -45,4 +45,5 @@ model listing {
   noOfVehicle String
   ownerId     String
   owner       user   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  photo       String @default("https://placehold.co/600x400") @db.VarChar(255)
 }
