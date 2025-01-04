@@ -1,6 +1,12 @@
 import { prisma } from "../auth/register/controller.js";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -12,6 +18,7 @@ const firebaseConfig = {
   storageBucket: process.env.STORAGEBUCKET,
   messagingSenderId: process.env.MESSAGINGSENDERID,
   appId: process.env.APPID,
+  measurementId: process.env.MESSAGINGSENDERID,
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -41,6 +48,27 @@ export const createListingController = async (req, res) => {
     }
     console.log(photo);
 
+    //get the storage service from firebase
+    const storage = getStorage();
+
+    // Create a storage reference (filepath or filename in which file is to be uploaded)
+    const storageRef = ref(storage, `${ownerId}-${photo.name}`); // making unique file name
+
+    // prepare metadata
+    const metadata = {
+      contentType: photo.mimetype,
+    };
+
+    // Upload the file using the prepared data
+    const uploadedFile = await uploadBytesResumable(
+      storageRef,
+      photo.data,
+      metadata
+    );
+
+    // Get the uploaded file URL
+    const URL = await getDownloadURL(uploadedFile.ref);
+    console.log(URL);
     const createList = await prisma.listing.create({
       data: {
         city,
@@ -49,6 +77,7 @@ export const createListingController = async (req, res) => {
         zipcode,
         type,
         description,
+
         rating,
         price,
         noOfVehicle,
