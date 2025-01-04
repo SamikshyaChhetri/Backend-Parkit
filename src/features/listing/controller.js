@@ -1,5 +1,21 @@
 import { prisma } from "../auth/register/controller.js";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyA1IdlU5R0EufKwnmGPzRmzhY3Oo0SUhH4",
+  authDomain: "parkify-1e3c7.firebaseapp.com",
+  projectId: "parkify-1e3c7",
+  storageBucket: "parkify-1e3c7.firebasestorage.app",
+  messagingSenderId: "502106164865",
+  appId: "1:502106164865:web:034a30b9b2198b2c2b0780",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 export const createListingController = async (req, res) => {
   try {
     const {
@@ -14,7 +30,7 @@ export const createListingController = async (req, res) => {
       noOfVehicle,
       ownerId,
     } = req.body;
-
+    console.log(req.files);
     const createList = await prisma.listing.create({
       data: {
         city,
