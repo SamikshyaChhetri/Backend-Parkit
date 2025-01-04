@@ -6,14 +6,13 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA1IdlU5R0EufKwnmGPzRmzhY3Oo0SUhH4",
-  authDomain: "parkify-1e3c7.firebaseapp.com",
-  projectId: "parkify-1e3c7",
-  storageBucket: "parkify-1e3c7.firebasestorage.app",
-  messagingSenderId: "502106164865",
-  appId: "1:502106164865:web:034a30b9b2198b2c2b0780",
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTHDOMAIN,
+  projectId: process.env.PROJECTID,
+  storageBucket: process.env.STORAGEBUCKET,
+  messagingSenderId: process.env.MESSAGINGSENDERID,
+  appId: process.env.APPID,
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const createListingController = async (req, res) => {
@@ -30,7 +29,18 @@ export const createListingController = async (req, res) => {
       noOfVehicle,
       ownerId,
     } = req.body;
-    console.log(req.files);
+    const { photo } = req.files;
+    // const photo=req.files.photo
+    if (!photo) {
+      return res.send({
+        success: false,
+        message: "Photo is required",
+        data: [],
+        error: [],
+      });
+    }
+    console.log(photo);
+
     const createList = await prisma.listing.create({
       data: {
         city,
@@ -45,7 +55,6 @@ export const createListingController = async (req, res) => {
         ownerId,
       },
     });
-
     return res.status(201).send({
       success: true,
       data: createList,
