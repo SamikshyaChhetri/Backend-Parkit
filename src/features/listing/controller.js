@@ -82,6 +82,7 @@ export const createListingController = async (req, res) => {
         price,
         noOfVehicle,
         ownerId,
+        photo: URL,
       },
     });
     return res.status(201).send({
