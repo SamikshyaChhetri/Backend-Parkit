@@ -21,7 +21,7 @@ app.use("/auth", registerRouter);
 app.use("/users", userRouter);
 app.use("/auth", loginrouter);
 app.use("/listing", listRouter);
-app.use("/", reviewRouter);
+app.use("/review", reviewRouter);
 app.listen(3333, () => {
   console.log("Server is running at 3333 port");
 });
