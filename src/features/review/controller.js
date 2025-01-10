@@ -1,10 +1,12 @@
-import { prisma } from "../auth/register/controller";
+import { prisma } from "../auth/register/controller.js";
 
 export const reviewController = async (req, res) => {
   try {
     // const { rating, comment } = req.body;
     const rating = req.body.rating;
     const comment = req.body.comment;
+    const reviewerId = req.body.reviewerId;
+    const listingId = req.body.listingId;
 
     // Ensure rating and comment are provided
     if (!rating || !comment) {
@@ -15,15 +17,15 @@ export const reviewController = async (req, res) => {
         error: ["Missing required fields"],
       });
     }
-
     // Create the review in the database
     const createReview = await prisma.review.create({
       data: {
         rating,
         comment,
+        reviewerId,
+        listingId,
       },
     });
-
     // Respond with success
     return res.status(201).send({
       success: true,
