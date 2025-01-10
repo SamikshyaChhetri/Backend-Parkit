@@ -43,3 +43,51 @@ export const reviewController = async (req, res) => {
     });
   }
 };
+export const getReviewController = async (req, res) => {
+  try {
+    const reviews = await prisma.review.findMany();
+    return res.status(200).send({
+      success: true,
+      data: reviews,
+      message: "Reviews fetched successfully",
+      error: [],
+    });
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
+    return res.status(500).send({
+      success: false,
+      data: [],
+      message: "Failed to fetch reviews",
+      error: [error.message],
+    });
+  }
+};
+export const getSingleReview = async (req, res) => {
+  try {
+    const review = await prisma.review.findFirst({
+      where: { id: req.params.id },
+    });
+    if (review) {
+      return res.status(200).send({
+        success: true,
+        data: review,
+        message: "Review fetched successfully",
+        error: [],
+      });
+    }
+    return res.status(404).send({
+      success: false,
+      data: [],
+      message: "Review not found",
+      error: ["Review not found"],
+    });
+  } catch (error) {
+    console.error("Error fetching review:", error);
+    return res.status(500).send({
+      success: false,
+      data: [],
+      message: "Failed to fetch review",
+      error: [error],
+    });
+  }
+};
