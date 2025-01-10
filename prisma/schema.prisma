@@ -23,6 +23,7 @@ model user {
   token    token[]
   avatar   String
   listing  listing[]
+  review   review[]
 }
 
 model token {
@@ -33,17 +34,28 @@ model token {
 }
 
 model listing {
-  id          String @id @default(cuid())
+  id          String   @id @default(cuid())
   city        String
   street      String
   country     String
   zipcode     String
   type        String
   description String
-  rating      Int    @default(0)
+  rating      Int      @default(0)
   price       String
   noOfVehicle String
   ownerId     String
-  owner       user   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  photo       String @default("https://placehold.co/600x400") @db.VarChar(255)
+  owner       user     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  photo       String   @default("https://placehold.co/600x400") @db.VarChar(255)
+  review      review[]
+}
+
+model review {
+  id         String  @id @default(cuid())
+  rating     Int
+  comment    String
+  reviewerId String
+  reviewer   user    @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  listingId  String
+  listing    listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
