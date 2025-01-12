@@ -2,7 +2,6 @@ import { prisma } from "../auth/register/controller.js";
 
 export const reviewController = async (req, res) => {
   try {
-    // const { rating, comment } = req.body;
     const rating = req.body.rating;
     const comment = req.body.comment;
     const reviewerId = req.body.reviewerId;
@@ -26,6 +25,19 @@ export const reviewController = async (req, res) => {
         listingId,
       },
     });
+    const reviews = await prisma.review.findMany({
+      where: { listingId: req.body.listingId },
+    });
+    let sum = 0;
+    reviews.forEach((i) => {
+      sum += i.rating;
+    });
+    const avg = sum / reviews.length;
+    console.log(sum, avg, reviews.length, listingId);
+    await prisma.listing.update({
+      where: { id: listingId },
+      data: { rating: avg },
+    });
     // Respond with success
     return res.status(201).send({
       success: true,
@@ -43,6 +55,7 @@ export const reviewController = async (req, res) => {
     });
   }
 };
+
 export const getReviewController = async (req, res) => {
   try {
     const reviews = await prisma.review.findMany();
@@ -62,24 +75,25 @@ export const getReviewController = async (req, res) => {
     });
   }
 };
+
 export const getSingleReview = async (req, res) => {
   try {
     const review = await prisma.review.findFirst({
       where: { id: req.params.id },
     });
-    if (review) {
-      return res.status(200).send({
-        success: true,
-        data: review,
-        message: "Review fetched successfully",
-        error: [],
+    if (!review) {
+      return res.status(404).send({
+        success: false,
+        data: [],
+        message: "Review not found",
+        error: ["Review not found"],
       });
     }
-    return res.status(404).send({
-      success: false,
-      data: [],
-      message: "Review not found",
-      error: ["Review not found"],
+    return res.status(200).send({
+      success: true,
+      data: review,
+      message: "Review fetched successfully",
+      error: [],
     });
   } catch (error) {
     console.error("Error fetching review:", error);
@@ -90,4 +104,18 @@ export const getSingleReview = async (req, res) => {
       error: [error],
     });
   }
+};
+
+export const getReviewsOfListing = async (req, res) => {
+  const reviewsOfListing = await prisma.review.findMany({
+    where: { listingId: req.params.listingId },
+    include: { reviewer: true },
+  });
+
+  return res.status(200).send({
+    success: true,
+    data: reviewsOfListing,
+    message: "Reviews fetched successfully",
+    error: [],
+  });
 };
