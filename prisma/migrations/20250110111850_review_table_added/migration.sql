@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- CreateTable
 CREATE TABLE `review` (
     `id` VARCHAR(191) NOT NULL,
