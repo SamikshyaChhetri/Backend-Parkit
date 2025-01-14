@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const seeds = [
   "oceanic_wave",
   "firefly_dusk",
@@ -59,4 +61,11 @@ export const generateAvatar = () => {
     "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=" +
     seeds[randomNumber];
   return layout;
+};
+
+export const validCuid = (data) => {
+  return data.length == 25 ? true : false;
+};
+export const validateDate = (data) => {
+  return moment(data).isValid();
 };
