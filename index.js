@@ -5,6 +5,7 @@ import fileUpload from "express-fileupload";
 import loginrouter from "./src/features/auth/login/routes.js";
 import registerRouter from "./src/features/auth/register/route.js";
 import listRouter from "./src/features/listing/route.js";
+import reservationRouter from "./src/features/reserve/route.js";
 import reviewRouter from "./src/features/review/route.js";
 import userRouter from "./src/features/users/route.js";
 const app = express();
@@ -22,6 +23,7 @@ app.use("/users", userRouter);
 app.use("/auth", loginrouter);
 app.use("/listing", listRouter);
 app.use("/review", reviewRouter);
+app.use("/reserve", reservationRouter);
 app.listen(3333, () => {
   console.log("Server is running at 3333 port");
 });
