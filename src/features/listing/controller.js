@@ -132,3 +132,25 @@ export const getSingleListing = async (req, res) => {
     error: ["Listing not found"],
   });
 };
+
+export const getUserListings = async (req, res) => {
+  try {
+    const userListings = await prisma.listing.findMany({
+      where: { ownerId: req.params.ownerId },
+    });
+    return res.status(400).send({
+      success: true,
+      data: userListings,
+      message: "Successfully fetched user's listings",
+      error: [],
+    });
+  } catch (error) {
+    return res.status(404).send({
+      success: false,
+      data: [],
+      message: "Listings not found",
+      error: ["Listings not found"],
+    });
+  }
+};
+//la vandeu k mistake vayexa
