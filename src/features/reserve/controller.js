@@ -5,6 +5,24 @@ import { schema } from "./validator.js";
 export const createReservationController = async (req, res) => {
   try {
     const { date, listingId, reserverId } = schema.parse(req.body);
+    const existingReservation = await prisma.reservation.findFirst({
+      where: {
+        listingId,
+        date: {
+          gte: moment(date).startOf("day"),
+          lte: moment(date).endOf("day"),
+        },
+      },
+    });
+
+    if (existingReservation) {
+      return res.status(400).send({
+        success: false,
+        data: [],
+        message: "Reservation for the date already exist",
+        error: [],
+      });
+    }
     const createdReservation = await prisma.reservation.create({
       data: {
         date: moment(date).toDate(),
@@ -12,7 +30,7 @@ export const createReservationController = async (req, res) => {
         reserverId,
       },
     });
-    return res.status(400).send({
+    return res.status(201).send({
       success: true,
       data: createdReservation,
       message: "Reservation created",
