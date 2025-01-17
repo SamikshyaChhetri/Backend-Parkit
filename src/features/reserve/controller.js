@@ -19,7 +19,7 @@ export const createReservationController = async (req, res) => {
       return res.status(400).send({
         success: false,
         data: [],
-        message: "Reservation for the date already exist",
+        message: "Reservation for the date already",
         error: [],
       });
     }
@@ -75,7 +75,6 @@ export const getSingleReservation = async (req, res) => {
     const singleReservation = await prisma.reservation.findFirst({
       where: { id: req.params.id },
     });
-    console.log(req.params.id);
     return res.status(200).send({
       success: true,
       data: singleReservation,
@@ -83,7 +82,31 @@ export const getSingleReservation = async (req, res) => {
       error: [],
     });
   } catch (error) {
-    return res.status(404).send({
+    return res.status(500).send({
+      success: false,
+      data: [],
+      message: "Internal server error",
+      error: error,
+    });
+  }
+};
+
+//Get Reservation of User
+export const getUserReservations = async (req, res) => {
+  try {
+    const userReservations = await prisma.reservation.findMany({
+      where: {
+        reserverId: req.params.reserverId,
+      },
+    });
+    return res.status(200).send({
+      success: true,
+      data: userReservations,
+      message: "User's Reservations fetched successfully",
+      error: [],
+    });
+  } catch (error) {
+    return res.status(500).send({
       success: false,
       data: [],
       message: "Internal server error",

@@ -8,6 +8,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+import moment from "moment";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -117,10 +118,20 @@ export const getSingleListing = async (req, res) => {
     where: { id: req.params.id },
     include: { owner: true },
   });
+  const reservationOfListing = await prisma.reservation.findMany({
+    where: {
+      listingId: req.params.id,
+    },
+  });
+  const dates = reservationOfListing.map((item) => {
+    return moment(item.date).format("YYYY-MM-DD");
+  });
+  console.log(dates);
+
   if (listdata) {
     return res.status(200).send({
       success: true,
-      data: listdata,
+      data: { ...listdata, unavailableDates: dates },
       message: "Single listing retrieved",
       error: [],
     });
@@ -138,7 +149,7 @@ export const getUserListings = async (req, res) => {
     const userListings = await prisma.listing.findMany({
       where: { ownerId: req.params.ownerId },
     });
-    return res.status(400).send({
+    return res.status(200).send({
       success: true,
       data: userListings,
       message: "Successfully fetched user's listings",
