@@ -58,8 +58,7 @@ export const generateAvatar = () => {
   //   console.log(randomNumber);
 
   const layout =
-    "https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=" +
-    seeds[randomNumber];
+    "https://api.dicebear.com/9.x/fun-emoji/svg?seed=" + seeds[randomNumber];
   return layout;
 };
 
