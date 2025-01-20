@@ -123,6 +123,7 @@ export const getSingleListing = async (req, res) => {
       listingId: req.params.id,
     },
   });
+
   const dates = reservationOfListing.map((item) => {
     return moment(item.date).format("YYYY-MM-DD");
   });

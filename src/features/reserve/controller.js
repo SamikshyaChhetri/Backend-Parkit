@@ -98,6 +98,7 @@ export const getUserReservations = async (req, res) => {
       where: {
         reserverId: req.params.reserverId,
       },
+      include: { listing: true },
     });
     return res.status(200).send({
       success: true,
