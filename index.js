@@ -24,6 +24,9 @@ app.use("/auth", loginrouter);
 app.use("/listing", listRouter);
 app.use("/review", reviewRouter);
 app.use("/reserve", reservationRouter);
+app.get("/", (req, res) => {
+  res.send("I am alive");
+});
 app.listen(3333, () => {
   console.log("Server is running at 3333 port");
 });
