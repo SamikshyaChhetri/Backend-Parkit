@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { isUser } from "../../middlewares/isUser.js";
 import {
   createListingController,
   getlistingsController,
@@ -8,7 +9,7 @@ import {
 
 const listRouter = Router();
 listRouter.post("/", createListingController);
-listRouter.get("/", getlistingsController);
+listRouter.get("/", isUser, getlistingsController);
 listRouter.get("/:id", getSingleListing);
 listRouter.get("/user/:ownerId", getUserListings);
 export default listRouter;

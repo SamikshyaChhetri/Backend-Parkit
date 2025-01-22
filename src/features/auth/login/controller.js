@@ -3,9 +3,7 @@ import jwt from "jsonwebtoken";
 import { prisma } from "../register/controller.js";
 export const loginController = async (req, res) => {
   const email = req.body.email;
-  console.log(req.cookies);
   const password = req.body.password;
-  // console.log(email, password);
   const findUser = await prisma.user.findFirst({
     where: {
       email,
@@ -69,4 +67,14 @@ export const loginController = async (req, res) => {
       error: [],
     });
   }
+};
+
+export const logoutController = async (req, res) => {
+  res.clearCookie("token");
+  return res.send({
+    success: true,
+    data: [],
+    message: "User logged out successfully",
+    error: [],
+  });
 };

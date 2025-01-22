@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { isUser } from "../../middlewares/isUser.js";
 import {
   createReservationController,
   getAllReservation,
@@ -8,7 +9,11 @@ import {
 
 const reservationRouter = Router();
 reservationRouter.post("/", createReservationController);
-reservationRouter.get("/", getAllReservation);
+reservationRouter.get("/", isUser, getAllReservation);
 reservationRouter.get("/:id", getSingleReservation);
-reservationRouter.get("/userReservations/:reserverId", getUserReservations);
+reservationRouter.get(
+  "/userReservations/:reserverId",
+  isUser,
+  getUserReservations
+);
 export default reservationRouter;
