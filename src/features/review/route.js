@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { isUser } from "../../middlewares/isUser.js";
 import {
   getReviewController,
   getReviewsOfListing,
@@ -7,9 +8,9 @@ import {
 } from "./controller.js";
 
 const reviewRouter = Router();
-reviewRouter.post("/", reviewController);
-reviewRouter.get("/", getReviewController);
-reviewRouter.get("/:id", getSingleReview);
-reviewRouter.get("/listing/:listingId", getReviewsOfListing);
+reviewRouter.post("/", isUser, reviewController);
+reviewRouter.get("/", isUser, getReviewController);
+reviewRouter.get("/:id", isUser, getSingleReview);
+reviewRouter.get("/listing/:listingId", isUser, getReviewsOfListing);
 
 export default reviewRouter;

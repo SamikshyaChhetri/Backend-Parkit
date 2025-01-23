@@ -3,7 +3,7 @@ import { prisma } from "../features/auth/register/controller.js";
 export const isUser = async (req, res, next) => {
   const cookie = req.cookies.token;
   const decodedCookie = jwt.decode(cookie);
-  if (!decodedCookie.userid) {
+  if (!decodedCookie) {
     return res.status(401).send({
       success: false,
       message: "Unauthorized",

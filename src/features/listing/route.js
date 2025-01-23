@@ -8,8 +8,8 @@ import {
 } from "./controller.js";
 
 const listRouter = Router();
-listRouter.post("/", createListingController);
+listRouter.post("/", isUser, createListingController);
 listRouter.get("/", isUser, getlistingsController);
-listRouter.get("/:id", getSingleListing);
-listRouter.get("/user/:ownerId", getUserListings);
+listRouter.get("/:id", isUser, getSingleListing);
+listRouter.get("/user/:ownerId", isUser, getUserListings);
 export default listRouter;

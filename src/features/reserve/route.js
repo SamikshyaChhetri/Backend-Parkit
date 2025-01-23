@@ -8,9 +8,9 @@ import {
 } from "./controller.js";
 
 const reservationRouter = Router();
-reservationRouter.post("/", createReservationController);
+reservationRouter.post("/", isUser, createReservationController);
 reservationRouter.get("/", isUser, getAllReservation);
-reservationRouter.get("/:id", getSingleReservation);
+reservationRouter.get("/:id", isUser, getSingleReservation);
 reservationRouter.get(
   "/userReservations/:reserverId",
   isUser,
