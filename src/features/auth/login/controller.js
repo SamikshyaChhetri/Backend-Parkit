@@ -70,8 +70,22 @@ export const loginController = async (req, res) => {
 };
 
 export const logoutController = async (req, res) => {
+  const userId = req.body.userId;
+  if (!userId) {
+    return res.status(404).send({
+      success: false,
+      data: [],
+      message: "Please provide a userId",
+      error: [],
+    });
+  }
+  prisma.token.delete({
+    where: {
+      userId,
+    },
+  });
   res.clearCookie("token");
-  return res.send({
+  return res.status(200).send({
     success: true,
     data: [],
     message: "User logged out successfully",
