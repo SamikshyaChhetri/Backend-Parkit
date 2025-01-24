@@ -18,7 +18,6 @@ export const isUser = async (req, res, next) => {
     },
   });
   if (cookie == userToken.token) {
-    console.log("Valid user");
     next();
   } else {
     return res.status(401).send({
@@ -28,5 +27,4 @@ export const isUser = async (req, res, next) => {
       error: [],
     });
   }
-  console.log(JSON.stringify(userToken));
 };

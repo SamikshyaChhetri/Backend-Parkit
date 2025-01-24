@@ -48,7 +48,6 @@ export const createListingController = async (req, res) => {
         error: [],
       });
     }
-    console.log(photo);
 
     //get the storage service from firebase
     const storage = getStorage();
@@ -157,11 +156,45 @@ export const getUserListings = async (req, res) => {
       error: [],
     });
   } catch (error) {
-    return res.status(404).send({
+    return res.status(500).send({
       success: false,
       data: [],
-      message: "Listings not found",
-      error: ["Listings not found"],
+      message: "Internal Server Error",
+      error,
+    });
+  }
+};
+
+export const updateListingDetails = async (req, res) => {
+  try {
+    const listingDetails = await prisma.listing.findFirst({
+      where: { id: req.body.id },
+    });
+    if (!listingDetails) {
+      return res.status(404).send({
+        success: false,
+        data: [],
+        message: "Listing not found",
+        error: ["Listing not found"],
+      });
+    }
+    const updateListing = await prisma.listing.update({
+      where: { id: req.body.id },
+      data: req.body,
+    });
+    return res.status(200).send({
+      success: true,
+      data: updateListing,
+      message: "Listing updated successfully",
+      error: [],
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      data: [],
+      message: "Internal Server Error",
+      error,
     });
   }
 };

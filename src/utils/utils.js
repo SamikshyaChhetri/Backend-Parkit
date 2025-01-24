@@ -55,7 +55,6 @@ const seeds = [
 
 export const generateAvatar = () => {
   const randomNumber = Math.floor(Math.random() * 49);
-  //   console.log(randomNumber);
 
   const layout =
     "https://api.dicebear.com/9.x/fun-emoji/svg?seed=" + seeds[randomNumber];

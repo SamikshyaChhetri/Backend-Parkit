@@ -33,7 +33,6 @@ export const reviewController = async (req, res) => {
       sum += i.rating;
     });
     const avg = sum / reviews.length;
-    console.log(sum, avg, reviews.length, listingId);
     await prisma.listing.update({
       where: { id: listingId },
       data: { rating: avg },

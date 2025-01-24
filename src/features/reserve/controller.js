@@ -37,7 +37,6 @@ export const createReservationController = async (req, res) => {
       error: [],
     });
   } catch (error) {
-    console.log(error);
     res.status(500).send({
       success: false,
       data: [],
@@ -51,7 +50,6 @@ export const createReservationController = async (req, res) => {
 export const getAllReservation = async (req, res) => {
   try {
     const allReservations = await prisma.reservation.findMany();
-    console.log(allReservations);
 
     return res.status(200).send({
       success: true,
