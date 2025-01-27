@@ -45,7 +45,6 @@ export const reviewController = async (req, res) => {
       error: [],
     });
   } catch (error) {
-    console.error("Error adding review:", error);
     return res.status(500).send({
       success: false,
       data: [],
@@ -65,7 +64,6 @@ export const getReviewController = async (req, res) => {
       error: [],
     });
   } catch (error) {
-    console.error("Error fetching reviews:", error);
     return res.status(500).send({
       success: false,
       data: [],
@@ -95,7 +93,6 @@ export const getSingleReview = async (req, res) => {
       error: [],
     });
   } catch (error) {
-    console.error("Error fetching review:", error);
     return res.status(500).send({
       success: false,
       data: [],

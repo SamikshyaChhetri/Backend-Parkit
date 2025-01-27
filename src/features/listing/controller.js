@@ -69,7 +69,6 @@ export const createListingController = async (req, res) => {
 
     // Get the uploaded file URL
     const URL = await getDownloadURL(uploadedFile.ref);
-    console.log(URL);
     const createList = await prisma.listing.create({
       data: {
         city,
@@ -93,7 +92,6 @@ export const createListingController = async (req, res) => {
       error: [],
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).send({
       success: false,
       data: [],
@@ -130,7 +128,6 @@ export const getSingleListing = async (req, res) => {
   const dates = reservationOfListing.map((item) => {
     return moment(item.date).format("YYYY-MM-DD");
   });
-  console.log(dates);
 
   if (listdata) {
     return res.status(200).send({
@@ -193,7 +190,6 @@ export const updateListingDetails = async (req, res) => {
       error: [],
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).send({
       success: false,
       data: [],
