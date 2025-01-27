@@ -13,5 +13,5 @@ listRouter.post("/", isUser, createListingController);
 listRouter.get("/", isUser, getlistingsController);
 listRouter.get("/:id", isUser, getSingleListing);
 listRouter.get("/user/:ownerId", isUser, getUserListings);
-listRouter.patch("/", isUser, updateListingDetails);
+listRouter.patch("/:id", isUser, updateListingDetails);
 export default listRouter;

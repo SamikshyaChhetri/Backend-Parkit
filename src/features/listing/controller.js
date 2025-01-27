@@ -115,7 +115,11 @@ export const getlistingsController = async (req, res) => {
 export const getSingleListing = async (req, res) => {
   const listdata = await prisma.listing.findFirst({
     where: { id: req.params.id },
-    include: { owner: true },
+    include: {
+      owner: true,
+      review: { include: { reviewer: true } },
+      reservation: { include: { reserver: true } },
+    },
   });
   const reservationOfListing = await prisma.reservation.findMany({
     where: {
@@ -168,7 +172,7 @@ export const getUserListings = async (req, res) => {
 export const updateListingDetails = async (req, res) => {
   try {
     const listingDetails = await prisma.listing.findFirst({
-      where: { id: req.body.id },
+      where: { id: req.params.id },
     });
     if (!listingDetails) {
       return res.status(404).send({
@@ -179,7 +183,7 @@ export const updateListingDetails = async (req, res) => {
       });
     }
     const updateListing = await prisma.listing.update({
-      where: { id: req.body.id },
+      where: { id: req.params.id },
       data: req.body,
     });
     return res.status(200).send({
