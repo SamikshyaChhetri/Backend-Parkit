@@ -106,6 +106,7 @@ export const getlistingsController = async (req, res) => {
     error: [],
   });
 };
+
 export const getSingleListing = async (req, res) => {
   const listdata = await prisma.listing.findFirst({
     where: { id: req.params.id },
@@ -183,6 +184,60 @@ export const updateListingDetails = async (req, res) => {
       success: true,
       data: updateListing,
       message: "Listing updated successfully",
+      error: [],
+    });
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      data: [],
+      message: "Internal Server Error",
+      error,
+    });
+  }
+};
+
+export const updatePhoto = async (req, res) => {
+  try {
+    const photo = req.files.photo;
+    if (!photo) {
+      return res.status(400).send({
+        success: false,
+        message: "Photo is required",
+        data: [],
+        error: [],
+      });
+    }
+    //get the storage service from firebase
+    const storage = getStorage();
+
+    // Create a storage reference (filepath or filename in which file is to be uploaded)
+    const storageRef = ref(storage, `${photo.name}`); // making unique file name
+
+    // prepare metadata
+    const metadata = {
+      contentType: photo.mimetype,
+    };
+
+    // Upload the file using the prepared data
+    const uploadedFile = await uploadBytesResumable(
+      storageRef,
+      photo.data,
+      metadata
+    );
+    // Get the uploaded file URL
+    const URL = await getDownloadURL(uploadedFile.ref);
+    const updatedlisting = await prisma.listing.update({
+      where: {
+        id: req.params.id,
+      },
+      data: {
+        photo: URL,
+      },
+    });
+    return res.status(200).send({
+      success: true,
+      data: updatedlisting,
+      message: "Photo updated successfully",
       error: [],
     });
   } catch (error) {
