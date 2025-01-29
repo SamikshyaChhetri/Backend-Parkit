@@ -106,7 +106,6 @@ export const getlistingsController = async (req, res) => {
     error: [],
   });
 };
-
 export const getSingleListing = async (req, res) => {
   const listdata = await prisma.listing.findFirst({
     where: { id: req.params.id },
