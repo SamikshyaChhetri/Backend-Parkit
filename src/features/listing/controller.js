@@ -9,8 +9,6 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import moment from "moment";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -41,7 +39,7 @@ export const createListingController = async (req, res) => {
     const { photo } = req.files;
     // const photo=req.files.photo
     if (!photo) {
-      return res.send({
+      return res.status(400).send({
         success: false,
         message: "Photo is required",
         data: [],
@@ -66,7 +64,6 @@ export const createListingController = async (req, res) => {
       photo.data,
       metadata
     );
-
     // Get the uploaded file URL
     const URL = await getDownloadURL(uploadedFile.ref);
     const createList = await prisma.listing.create({
