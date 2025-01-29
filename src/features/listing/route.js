@@ -6,6 +6,7 @@ import {
   getSingleListing,
   getUserListings,
   updateListingDetails,
+  updatePhoto,
 } from "./controller.js";
 
 const listRouter = Router();
@@ -14,4 +15,5 @@ listRouter.get("/", isUser, getlistingsController);
 listRouter.get("/:id", isUser, getSingleListing);
 listRouter.get("/user/:ownerId", isUser, getUserListings);
 listRouter.patch("/:id", isUser, updateListingDetails);
+listRouter.patch("/:id/photo", isUser, updatePhoto);
 export default listRouter;
