@@ -197,8 +197,10 @@ export const updateListingDetails = async (req, res) => {
 };
 
 export const updatePhoto = async (req, res) => {
+  console.log(req.files);
   try {
     const photo = req.files.photo;
+
     if (!photo) {
       return res.status(400).send({
         success: false,

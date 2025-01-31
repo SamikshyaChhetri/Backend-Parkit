@@ -92,3 +92,31 @@ export const logoutController = async (req, res) => {
     error: [],
   });
 };
+
+const resetPassword = async (req, res) => {
+  try {
+    const email = req.body.email;
+
+    const user = await prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        data: [],
+        message: "User not found",
+        error: [],
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      data: [],
+      message: "Internal Server Error",
+      error,
+    });
+  }
+};
