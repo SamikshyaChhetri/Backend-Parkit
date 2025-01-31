@@ -64,6 +64,11 @@ export const generateAvatar = () => {
 export const validCuid = (data) => {
   return data.length == 25 ? true : false;
 };
+
 export const validateDate = (data) => {
   return moment(data).isValid();
+};
+
+export const generateOtp = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
 };
