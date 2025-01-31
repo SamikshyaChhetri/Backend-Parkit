@@ -25,6 +25,7 @@ model user {
   listing     listing[]
   review      review[]
   reservation reservation[]
+  otp         otp[]
 }
 
 model token {
@@ -69,4 +70,11 @@ model reservation {
   date       DateTime
   reserver   user     @relation(fields: [reserverId], references: [id], onDelete: Cascade)
   listing    listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model otp {
+  id     String @id @default(cuid())
+  otp    String
+  userId String
+  user   user   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
