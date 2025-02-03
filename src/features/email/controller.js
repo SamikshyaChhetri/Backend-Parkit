@@ -1,6 +1,6 @@
 import { createTransport } from "nodemailer";
 
-const sendOTPcontroller = () => {
+export const sendOTPcontroller = (email, otp) => {
   try {
     const transporter = createTransport({
       service: "gmail",
@@ -14,9 +14,9 @@ const sendOTPcontroller = () => {
 
     transporter.sendMail({
       from: process.env.NODE_EMAIL,
-      to: "samikxyaxettri@gmail.com",
-      subject: "This is a test email",
-      text: "This is a test email",
+      to: email,
+      subject: "OTP for password reset",
+      text: `This is your OTP to reset your account password : ${otp}`,
     });
   } catch (error) {
     console.log(error);

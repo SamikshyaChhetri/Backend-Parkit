@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { generateOtp } from "../../../utils/utils.js";
+import { sendOTPcontroller } from "../../email/controller.js";
 import { prisma } from "../register/controller.js";
 export const loginController = async (req, res) => {
   const email = req.body.email;
@@ -139,6 +140,7 @@ export const resetPasswordController = async (req, res) => {
           },
         });
       }
+      sendOTPcontroller(email, generatedOtp);
 
       return res.status(200).send({
         success: true,
