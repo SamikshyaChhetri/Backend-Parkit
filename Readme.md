@@ -1,70 +1,59 @@
-# Parkify Backend
+# Parkify
 
-This is the backend application for Parkify, a parking management system. The backend is built using Express.js and provides a RESTful API for managing parking spaces, reservations, and users.
+Parkify is a parking management application built with Express.js. It helps users find and manage parking spaces efficiently.
 
-## Table of Contents
+## Features
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Contributing](#contributing)
-- [License](#license)
-- [Author](#author)
+- User authentication and authorization
+- Book and manage parking reservations
+- Admin dashboard for managing parking spaces
+
+## Tech Stack
+
+- Node js
+- Express js
+- Mysql
+- Prisma
+- Zod
+- Firebase
+- Nodemailer
+- JWT
 
 ## Installation
 
 1. Clone the repository:
-   ```sh
-   git clone https://github.com/yourusername/parkify-backend.git
+   ```bash
+   git clone https://github.com/SamikshyaChhetri/Backend-Parkit.git
    ```
 2. Navigate to the project directory:
-   ```sh
-   cd parkify-backend
+   ```bash
+   cd parkify
    ```
 3. Install the dependencies:
-   ```sh
+   ```bash
    npm install
    ```
 
 ## Usage
 
 1. Start the server:
-   ```sh
+   ```bash
    npm start
    ```
-2. The server will be running on `http://localhost:3000`.
-
-## API Endpoints
-
-### User Endpoints
-
-- `POST /users/register` - Register a new user
-- `POST /users/login` - Login a user
-
-### Parking Endpoints
-
-- `GET /listing` - Get all/listing spaces
-- `POST /listing` - Create a new/listing space
-- `GET /listing/:id` - Get a specific/listing space
-- `PUT /listing/:id` - Update a specific/listing space
-
-### Reservation Endpoints
-
-- `GET /reservations` - Get all reservations
-- `POST /reservations` - Create a new reservation
-- `GET /reservations/:id` - Get a specific reservation
-- `PUT /reservations/:id` - Update a specific reservation
-- `DELETE /reservations/:id` - Delete a specific reservation
+2. Open your browser and navigate to `http://localhost:3000`
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for any changes.
+We welcome contributions! Please read our [contributing guidelines](CONTRIBUTING.md) for more information.
 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+## Contact
+
+For any inquiries, please contact us at support@parkify.com.
+
 ## Author
 
-Name: Samikshya Baniya Chhetri
-Email: samikshyabchhetri@gmail.com
+Samikshya Baniya Chhetri
