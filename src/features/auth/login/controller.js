@@ -155,18 +155,18 @@ export const resetPasswordController = async (req, res) => {
         },
       });
       if (!otpfromDb || otpfromDb.otp != otp) {
-        return res.status(401).send({
+        return res.status(400).send({
           success: false,
           data: [],
           message: "OTP doesn't match",
           error: [],
         });
       }
-      if (!req.body.password) {
-        return res.status(401).send({
+      if (!req.body.password || !req.body.email) {
+        return res.status(400).send({
           success: false,
           data: [],
-          message: "please provide a password",
+          message: "please provide a email and password",
           error: [],
         });
       }
