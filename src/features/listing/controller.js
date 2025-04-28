@@ -74,7 +74,6 @@ export const createListingController = async (req, res) => {
         zipcode,
         type,
         description,
-
         rating,
         price,
         noOfVehicle,
@@ -98,6 +97,7 @@ export const createListingController = async (req, res) => {
   }
 };
 export const getlistingsController = async (req, res) => {
+  //getting all listings
   const all_list = await prisma.listing.findMany();
   return res.status(200).send({
     success: true,

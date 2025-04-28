@@ -36,7 +36,7 @@ export const loginController = async (req, res) => {
       "www"
     );
     res.cookie("token", token, {
-      httpOnly: true,
+      httpOnly: true, //yesle backend bata matra cookie access garna dinxa
     });
     const findToken = await prisma.token.findFirst({
       where: {
