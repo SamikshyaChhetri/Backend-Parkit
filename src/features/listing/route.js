@@ -2,6 +2,7 @@ import { Router } from "express";
 import { isUser } from "../../middlewares/isUser.js";
 import {
   createListingController,
+  deleteListingController,
   getlistingsController,
   getSingleListing,
   getUserListings,
@@ -16,4 +17,5 @@ listRouter.get("/:id", isUser, getSingleListing);
 listRouter.get("/user/:ownerId", isUser, getUserListings);
 listRouter.patch("/:id", isUser, updateListingDetails);
 listRouter.patch("/:id/photo", isUser, updatePhoto);
+listRouter.delete("/:id", isUser, deleteListingController);
 export default listRouter;

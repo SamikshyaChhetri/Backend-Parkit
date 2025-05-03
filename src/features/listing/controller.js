@@ -251,3 +251,49 @@ export const updatePhoto = async (req, res) => {
     });
   }
 };
+
+export const deleteListingController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const listing = await prisma.listing.findFirst({
+      where: {
+        id,
+      },
+    });
+    if (!listing) {
+      return res.status(404).send({
+        success: false,
+        data: [],
+        message: "Listing not found",
+        error: [],
+      });
+    }
+    if (listing.ownerId !== res.locals.userId) {
+      return res.status(404).send({
+        success: false,
+        data: [],
+        message: "Listing not found",
+        error: [],
+      });
+    }
+    await prisma.listing.delete({
+      where: {
+        id,
+      },
+    });
+    return res.status(200).send({
+      success: true,
+      data: [],
+      message: "Listing deleted successfully",
+      error: [],
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      data: [],
+      message: "Internal Server Error",
+      error,
+    });
+  }
+};

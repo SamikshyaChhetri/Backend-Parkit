@@ -12,6 +12,7 @@ export const isUser = async (req, res, next) => {
     });
   }
   const userId = decodedCookie.userid;
+  res.locals.userId = userId;
   const userToken = await prisma.token.findFirst({
     where: {
       userId,
