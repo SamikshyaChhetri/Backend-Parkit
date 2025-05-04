@@ -17,7 +17,9 @@ export const reviewController = async (req, res) => {
       });
     }
     const listing = await prisma.listing.findFirst({
-      where: { listingId },
+      where: {
+        id: listingId,
+      },
     });
     if (!listing) {
       return res.status(404).send({
@@ -27,6 +29,18 @@ export const reviewController = async (req, res) => {
         error: [],
       });
     }
+
+    const loggedInUser = res.locals.userId;
+
+    if (loggedInUser === listing.ownerId) {
+      return res.status(400).send({
+        success: false,
+        data: [],
+        message: "Owner can't add a review",
+        error: [],
+      });
+    }
+
     // Create the review in the database
     const createReview = await prisma.review.create({
       data: {
@@ -56,10 +70,11 @@ export const reviewController = async (req, res) => {
       error: [],
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).send({
       success: false,
       data: [],
-      message: "Failed to add review",
+      message: "Internal server error",
       error: [error.message],
     });
   }
