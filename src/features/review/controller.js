@@ -16,6 +16,17 @@ export const reviewController = async (req, res) => {
         error: ["Missing required fields"],
       });
     }
+    const listing = await prisma.listing.findFirst({
+      where: { listingId },
+    });
+    if (!listing) {
+      return res.status(404).send({
+        success: false,
+        data: [],
+        message: "Listing not found",
+        error: [],
+      });
+    }
     // Create the review in the database
     const createReview = await prisma.review.create({
       data: {
