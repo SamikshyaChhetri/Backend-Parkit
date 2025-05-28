@@ -19,7 +19,7 @@ app.use(
   })
 ); //frontend bata pathako attachment lai parse garera usable form ma dinxa(req.files ma dinxa)
 
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true })); //kun kun domain bata aako req accept garne vanera specify garxa. Credential true le chai cookies haru ni accept garna dinxa
+app.use(cors({ origin: true, credentials: true })); //kun kun domain bata aako req accept garne vanera specify garxa. Credential true le chai cookies haru ni accept garna dinxa
 app.use("/auth", registerRouter);
 app.use("/users", userRouter);
 app.use("/auth", loginrouter);
