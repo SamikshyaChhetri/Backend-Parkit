@@ -8,6 +8,9 @@ export const registerController = async (req, res) => {
   const phone = req.body.phone;
   const address = req.body.address;
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const country = req.body.country;
+  const zipcode = req.body.zipcode;
+  const gender = req.body.gender;
   const findEmail = await prisma.user.findFirst({
     where: {
       email,
@@ -30,6 +33,9 @@ export const registerController = async (req, res) => {
       address,
       phone,
       avatar: generatedAvatar,
+      country,
+      zipcode,
+      gender,
     },
   });
   return res.send({

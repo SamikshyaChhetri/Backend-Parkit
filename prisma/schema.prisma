@@ -20,6 +20,9 @@ model user {
   password    String
   address     String
   phone       String
+  country     String?
+  zipcode     String?
+  gender      String?
   token       token[]
   avatar      String
   listing     listing[]
