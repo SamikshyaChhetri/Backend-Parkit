@@ -72,6 +72,9 @@ export const getSingleReservation = async (req, res) => {
   try {
     const singleReservation = await prisma.reservation.findFirst({
       where: { id: req.params.id },
+      include: {
+        listing: { include: { owner: true } },
+      },
     });
     return res.status(200).send({
       success: true,
@@ -80,6 +83,7 @@ export const getSingleReservation = async (req, res) => {
       error: [],
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).send({
       success: false,
       data: [],
@@ -110,6 +114,42 @@ export const getUserReservations = async (req, res) => {
       data: [],
       message: "Internal server error",
       error: error,
+    });
+  }
+};
+
+//Delete Reservation
+export const deleteReservation = async (req, res) => {
+  try {
+    const deleteReservation = await prisma.reservation.findFirst({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!deleteReservation) {
+      return res.status(404).send({
+        success: false,
+        data: [],
+        message: "Reservation not found",
+        error: error,
+      });
+    }
+    await prisma.reservation.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
+    return res.status(200).send({
+      success: true,
+      data: null,
+      message: "Reservation deleted successfully",
+    });
+  } catch (err) {
+    return res.status(500).send({
+      success: false,
+      data: [],
+      message: "Internal server error",
+      error: err,
     });
   }
 };
