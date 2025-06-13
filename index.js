@@ -8,6 +8,7 @@ import registerRouter from "./src/features/auth/register/route.js";
 import listRouter from "./src/features/listing/route.js";
 import reservationRouter from "./src/features/reserve/route.js";
 import reviewRouter from "./src/features/review/route.js";
+import settingsRouter from "./src/features/settings/route.js";
 import userRouter from "./src/features/users/route.js";
 const app = express();
 app.use(express.json()); //api bata aako string ko form ma vako json lai usable json ma parse garxa(req.body ma dinxa)
@@ -26,6 +27,8 @@ app.use("/auth", loginrouter);
 app.use("/listing", listRouter);
 app.use("/review", reviewRouter);
 app.use("/reserve", reservationRouter);
+app.use("/settings", settingsRouter);
+
 app.get("/", (req, res) => {
   res.send("I am alive");
 }); //backend chalexa ki naai check garxa
