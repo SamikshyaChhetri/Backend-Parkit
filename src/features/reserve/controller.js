@@ -131,7 +131,6 @@ export const deleteReservation = async (req, res) => {
         success: false,
         data: [],
         message: "Reservation not found",
-        error: error,
       });
     }
     await prisma.reservation.delete({
