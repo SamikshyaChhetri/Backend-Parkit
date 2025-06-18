@@ -24,7 +24,7 @@ export const updateProfileController = async (req, res) => {
 
     const updatedData = await prisma.user.update({
       where: {
-        id: req.params.id,
+        id: res.locals.userId,
       },
       data: {
         name,
@@ -41,6 +41,8 @@ export const updateProfileController = async (req, res) => {
       message: "User updated successfully",
     });
   } catch (err) {
+    console.log(err);
+
     return res.status(500).send({
       success: false,
       message: "Internal server error",
