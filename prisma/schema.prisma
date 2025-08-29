@@ -45,7 +45,7 @@ model listing {
   country     String
   zipcode     String
   type        String
-  description String
+  description String        @db.LongText
   rating      Int           @default(0)
   price       String
   noOfVehicle String
