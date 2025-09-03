@@ -5,6 +5,7 @@ import express from "express";
 import fileUpload from "express-fileupload";
 import loginrouter from "./src/features/auth/login/routes.js";
 import registerRouter from "./src/features/auth/register/route.js";
+import { cronsRouter } from "./src/features/crons/route.js";
 import listRouter from "./src/features/listing/route.js";
 import reservationRouter from "./src/features/reserve/route.js";
 import reviewRouter from "./src/features/review/route.js";
@@ -28,7 +29,7 @@ app.use("/listing", listRouter);
 app.use("/review", reviewRouter);
 app.use("/reserve", reservationRouter);
 app.use("/settings", settingsRouter);
-
+app.use("/crons", cronsRouter);
 app.get("/", (req, res) => {
   res.send("I am alive");
 }); //backend chalexa ki naai check garxa
