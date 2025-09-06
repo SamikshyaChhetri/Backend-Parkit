@@ -35,6 +35,8 @@ export const createListingController = async (req, res) => {
       price,
       noOfVehicle,
       ownerId,
+      lat,
+      long,
     } = req.body;
     const { photo } = req.files;
     // const photo=req.files.photo
@@ -79,6 +81,8 @@ export const createListingController = async (req, res) => {
         noOfVehicle,
         ownerId,
         photo: URL,
+        lat,
+        long,
       },
     });
     return res.status(201).send({
@@ -111,6 +115,7 @@ export const getlistingsController = async (req, res) => {
       ],
     },
   });
+
   return res.status(200).send({
     success: true,
     data: all_list,
@@ -188,9 +193,14 @@ export const updateListingDetails = async (req, res) => {
         error: ["Listing not found"],
       });
     }
+    console.log(req.body);
     const updateListing = await prisma.listing.update({
       where: { id: req.params.id },
-      data: req.body,
+      data: {
+        ...req.body,
+        lat: String(req.body.lat),
+        long: String(req.body.long),
+      },
     });
     return res.status(200).send({
       success: true,
@@ -199,6 +209,7 @@ export const updateListingDetails = async (req, res) => {
       error: [],
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).send({
       success: false,
       data: [],

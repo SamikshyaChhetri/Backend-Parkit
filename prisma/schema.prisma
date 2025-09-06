@@ -54,6 +54,8 @@ model listing {
   photo       String        @default("https://placehold.co/600x400") @db.VarChar(255)
   review      review[]
   reservation reservation[]
+  lat         String        @default(" ")
+  long        String        @default(" ")
 }
 
 model review {
