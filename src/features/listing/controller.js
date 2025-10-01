@@ -115,6 +115,7 @@ export const getlistingsController = async (req, res) => {
 export const getSingleListing = async (req, res) => {
   const listdata = await prisma.listing.findFirst({
     where: { id: req.params.id },
+    include: { owner: true },
   });
   if (listdata) {
     return res.status(200).send({

@@ -11,7 +11,17 @@ export const singleUserController = async (req, res) => {
     },
   });
   if (!userData) {
-    return res.send("No user found");
+    return res.status(404).send({
+      success: false,
+      data: [],
+      message: "User not found",
+      error: ["User not found"],
+    });
   }
-  return res.send(userData);
+  return res.status(200).send({
+    success: true,
+    data: userData,
+    message: "User retrieved",
+    error: [],
+  });
 };
