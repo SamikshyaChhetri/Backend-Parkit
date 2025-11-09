@@ -29,6 +29,7 @@ model user {
   review      review[]
   reservation reservation[]
   otp         otp[]
+  type        String        @default("user")
 }
 
 model token {
@@ -42,8 +43,8 @@ model listing {
   id          String        @id @default(cuid())
   city        String
   street      String
-  country     String
-  zipcode     String
+  country     String?
+  zipcode     String?
   type        String
   description String        @db.LongText
   rating      Int           @default(0)
@@ -56,6 +57,7 @@ model listing {
   reservation reservation[]
   lat         String        @default(" ")
   long        String        @default(" ")
+  paymentQr   String?       @db.LongText
 }
 
 model review {
@@ -73,6 +75,10 @@ model reservation {
   reserverId String
   listingId  String
   date       DateTime
+  endDate    DateTime @default(now())
+  startTime  String   @default("00:00")
+  endTime    String   @default("00:00")
+  slots      Int      @default(1)
   reserver   user     @relation(fields: [reserverId], references: [id], onDelete: Cascade)
   listing    listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }

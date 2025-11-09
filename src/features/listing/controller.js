@@ -27,8 +27,6 @@ export const createListingController = async (req, res) => {
     const {
       city,
       street,
-      country,
-      zipcode,
       type,
       description,
       rating,
@@ -38,7 +36,7 @@ export const createListingController = async (req, res) => {
       lat,
       long,
     } = req.body;
-    const { photo } = req.files;
+    const { photo, paymentQr } = req.files;
     // const photo=req.files.photo
     if (!photo) {
       return res.status(400).send({
@@ -49,38 +47,54 @@ export const createListingController = async (req, res) => {
       });
     }
 
+    if (!paymentQr) {
+      return res.status(400).send({
+        success: false,
+        message: "Payment QR code is required",
+        data: [],
+        error: [],
+      });
+    }
+
     //get the storage service from firebase
     const storage = getStorage();
 
-    // Create a storage reference (filepath or filename in which file is to be uploaded)
-    const storageRef = ref(storage, `${ownerId}-${photo.name}`); // making unique file name
-
-    // prepare metadata
-    const metadata = {
+    // Upload photo
+    const photoStorageRef = ref(storage, `${ownerId}-${photo.name}`);
+    const photoMetadata = {
       contentType: photo.mimetype,
     };
-
-    // Upload the file using the prepared data
-    const uploadedFile = await uploadBytesResumable(
-      storageRef,
+    const uploadedPhoto = await uploadBytesResumable(
+      photoStorageRef,
       photo.data,
-      metadata
+      photoMetadata
     );
-    // Get the uploaded file URL
-    const URL = await getDownloadURL(uploadedFile.ref);
+    const photoURL = await getDownloadURL(uploadedPhoto.ref);
+
+    // Upload payment QR
+    const qrStorageRef = ref(storage, `${ownerId}-qr-${paymentQr.name}`);
+    const qrMetadata = {
+      contentType: paymentQr.mimetype,
+    };
+    const uploadedQr = await uploadBytesResumable(
+      qrStorageRef,
+      paymentQr.data,
+      qrMetadata
+    );
+    const qrURL = await getDownloadURL(uploadedQr.ref);
+
     const createList = await prisma.listing.create({
       data: {
         city,
         street,
-        country,
-        zipcode,
         type,
         description,
         rating,
         price,
         noOfVehicle,
         ownerId,
-        photo: URL,
+        photo: photoURL,
+        paymentQr: qrURL,
         lat,
         long,
       },

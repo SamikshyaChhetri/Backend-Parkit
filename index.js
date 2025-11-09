@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import fileUpload from "express-fileupload";
+import adminRouter from "./src/features/admin/route.js";
 import loginrouter from "./src/features/auth/login/routes.js";
 import registerRouter from "./src/features/auth/register/route.js";
 import { cronsRouter } from "./src/features/crons/route.js";
@@ -32,6 +33,7 @@ app.use("/reserve", reservationRouter);
 app.use("/settings", settingsRouter);
 app.use("/crons", cronsRouter);
 app.use("/recommendation", recommendationRoutes);
+app.use("/admin", adminRouter);
 app.get("/", (req, res) => {
   res.send("I am alive");
 }); //backend chalexa ki naai check garxa

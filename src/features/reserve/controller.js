@@ -4,30 +4,76 @@ import { schema } from "./validator.js";
 
 export const createReservationController = async (req, res) => {
   try {
-    const { date, listingId, reserverId } = schema.parse(req.body);
-    const existingReservation = await prisma.reservation.findFirst({
-      where: {
-        listingId,
-        date: {
-          gte: moment(date).startOf("day"),
-          lte: moment(date).endOf("day"),
-        },
-      },
-    });
-
-    if (existingReservation) {
+    const { date, listingId, reserverId, endDate, slots } = schema.parse(req.body);
+    // validate date range
+    const start = moment(date);
+    const end = moment(endDate);
+    if (!start.isValid() || !end.isValid()) {
       return res.status(400).send({
         success: false,
         data: [],
-        message: "Reservation for the date already",
+        message: "Invalid date or endDate",
         error: [],
       });
     }
+
+    if (end.isBefore(start) || end.isSame(start)) {
+      return res.status(400).send({
+        success: false,
+        data: [],
+        message: "endDate must be after start date",
+        error: [],
+      });
+    }
+
+    // Overlap check: two ranges [A,B] and [C,D] overlap if A <= D && B >= C
+    // Fetch listing to read capacity
+    const listing = await prisma.listing.findUnique({ where: { id: listingId } });
+    if (!listing) {
+      return res.status(404).send({
+        success: false,
+        data: [],
+        message: "Listing not found",
+        error: [],
+      });
+    }
+
+    // listing.noOfVehicle is stored as a string in the schema; coerce to integer
+    const capacity = Number(String(listing.noOfVehicle).trim()) || 0;
+    const requestedSlots = Number(slots) || 1;
+
+    // Sum existing reserved slots that overlap the requested date/time range
+    const overlapWhere = {
+      listingId,
+      AND: [
+        { date: { lte: end.toDate() } },
+        { endDate: { gte: start.toDate() } },
+      ],
+    };
+
+    const aggregate = await prisma.reservation.aggregate({
+      where: overlapWhere,
+      _sum: { slots: true },
+    });
+
+    const existingSlots = (aggregate._sum && aggregate._sum.slots) ? aggregate._sum.slots : 0;
+
+    if (existingSlots + requestedSlots > capacity) {
+      return res.status(400).send({
+        success: false,
+        data: [],
+        message: `Not enough available slots for the requested time. Requested ${requestedSlots}, available ${Math.max(0, capacity - existingSlots)}.`,
+        error: [],
+      });
+    }
+
     const createdReservation = await prisma.reservation.create({
       data: {
         date: moment(date).toDate(),
+        endDate: moment(endDate).toDate(),
         listingId,
         reserverId,
+        slots: requestedSlots,
       },
     });
     return res.status(201).send({
