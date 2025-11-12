@@ -10,7 +10,6 @@ const removeOldReservations = async (req, res) => {
         },
       },
     });
-    // Logic to remove old reservations
     res.status(200).send("Old reservations removed");
   } catch (error) {
     res.status(500).send("Error removing old reservations");

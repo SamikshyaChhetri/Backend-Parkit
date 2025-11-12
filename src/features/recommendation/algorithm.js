@@ -16,7 +16,7 @@ function haversine(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-export function findNearestListing(userLocation, listings) {
+export function findNearestListing(userLocation, listings, count = 4) {
   // Input validation
   if (!userLocation) {
     console.error("Invalid user location:", userLocation);
@@ -37,8 +37,7 @@ export function findNearestListing(userLocation, listings) {
     return null;
   }
 
-  let nearest = null;
-  let minDistance = Infinity;
+  const scored = [];
 
   for (let listing of listings) {
     if (!listing) {
@@ -79,21 +78,25 @@ export function findNearestListing(userLocation, listings) {
       )} km`
     );
 
-    if (distance < minDistance) {
-      minDistance = distance;
-      nearest = listing;
-    }
+    scored.push({ listing, distance });
   }
 
-  if (nearest) {
-    console.log(
-      `Nearest listing found: ID ${nearest.id}, distance: ${minDistance.toFixed(
-        5
-      )} km`
-    );
-  } else {
-    console.log("No valid nearest listing found");
+  if (scored.length === 0) {
+    console.log("No valid listings found after parsing");
+    return [];
   }
 
-  return nearest;
+  // Sort by ascending distance and return up to `count` listings
+  scored.sort((a, b) => a.distance - b.distance);
+  const top = scored
+    .slice(0, Math.max(0, parseInt(count, 10) || 4))
+    .map((s) => s.listing);
+
+  console.log(
+    `Returning ${top.length} nearest listing(s): ${top
+      .map((l) => l.id)
+      .join(", ")}`
+  );
+
+  return top;
 }
